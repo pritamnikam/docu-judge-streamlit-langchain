@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: docu-judge
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+      # Uncomment and set your API keys here or in a .env file
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # - GROQ_API_KEY=${GROQ_API_KEY}
+      # - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+    volumes:
+      - .:/app
+    # Uncomment the following lines to enable GPU support
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    # environment:
+    #   - NVIDIA_VISIBLE_DEVICES=all
+
+  # Uncomment to add a Redis cache
+  # redis:
+  #   image: redis:alpine
+  #   container_name: docu-judge-redis
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+
+# volumes:
+#   redis_data:
+#     driver: local
