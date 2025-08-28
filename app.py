@@ -130,7 +130,9 @@ def main():
     config.max_tokens = max_tokens
     
     # Update LLM service with initial config
-    update_llm_config(provider, model, temperature, max_tokens)
+    if not update_llm_config(provider, model, temperature, max_tokens):
+        st.error("Failed to initialize LLM service. Please check your API key configuration.")
+        st.stop()  # Stop execution if API key is not configured
     
     # Main content
     st.header("📤 Upload Documents")
